@@ -14,7 +14,8 @@
     "check": "astro check",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
@@ -27,6 +28,7 @@
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.72.1"
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.1.0"
   }
 }
