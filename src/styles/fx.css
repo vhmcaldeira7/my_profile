@@ -1,0 +1,82 @@
+/* ---------- pointer fx: dot cursor drawn by the OS, a ring that trails it, square-pixel bursts ----------
+   Global on purpose: these nodes are created at runtime and appended to <body>. */
+@media (prefers-reduced-motion: no-preference) {
+  .has-cursor,
+  .has-cursor :not(dialog, dialog *) {
+    cursor:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='4' fill='%232EC08E' stroke='%230A0E12' stroke-width='1.5'/%3E%3C/svg%3E")
+        8 8,
+      auto !important;
+  }
+  .has-cursor :is(input, textarea, [contenteditable]) {
+    cursor: text !important;
+  }
+}
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--pill);
+  border: 1px solid color-mix(in srgb, var(--text) 50%, transparent);
+  font: 500 0.625rem/1 var(--font-body);
+  letter-spacing: 0.04em;
+  color: var(--text);
+  transition:
+    opacity 0.3s,
+    background-color 0.3s,
+    border-color 0.3s;
+}
+.cursor[data-mode='off'] {
+  opacity: 0;
+}
+.cursor span {
+  align-self: end;
+  padding-bottom: 13px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.cursor:is([data-mode='link'], [data-mode='lock'], [data-mode='label']) {
+  background: color-mix(in srgb, var(--accent-fill) 12%, transparent);
+}
+.cursor[data-mode='lock'] {
+  border-color: var(--accent);
+}
+.cursor[data-mode='label'] span {
+  opacity: 1;
+}
+.fx-burst,
+.fx-swarm {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  contain: strict;
+}
+:is(.fx-burst, .fx-swarm) i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--accent-fill);
+}
+:is(.fx-burst, .fx-swarm) i:nth-child(3n) {
+  background: var(--particle);
+}
+.fx-swarm i {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cursor,
+  .fx-burst,
+  .fx-swarm {
+    display: none;
+  }
+  .btn {
+    transition: none;
+  }
+}
