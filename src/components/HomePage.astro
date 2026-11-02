@@ -1,0 +1,27 @@
+---
+import type { Locale } from '../i18n';
+import Layout from '../layouts/Layout.astro';
+import Career from './Career.astro';
+import Cases from './Cases.astro';
+import Contact from './Contact.astro';
+import Hero from './Hero.astro';
+import Offers from './Offers.astro';
+import Skills from './Skills.astro';
+import Voices from './Voices.astro';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+---
+
+<Layout lang={lang}>
+  <Hero lang={lang} />
+  <Offers lang={lang} />
+  <Cases lang={lang} />
+  <Career lang={lang} />
+  <Skills lang={lang} />
+  <Voices lang={lang} />
+  <Contact lang={lang} />
+</Layout>

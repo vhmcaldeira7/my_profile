@@ -1,0 +1,27 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+---
+
+<footer class="footer wrap">
+  <span>© 2026 Victor Caldeira.</span>
+  <span>{t('ft.note')}</span>
+</footer>
+
+<style>
+  .footer {
+    padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--line);
+    color: var(--text-faint);
+    font-size: 0.875rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 32px;
+    justify-content: space-between;
+  }
+</style>

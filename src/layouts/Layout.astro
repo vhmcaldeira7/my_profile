@@ -1,0 +1,54 @@
+---
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/figures.css';
+import '../styles/fx.css';
+import Footer from '../components/Footer.astro';
+import Nav from '../components/Nav.astro';
+import { defaultLocale, htmlLang, locales, localePath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const title = 'Victor Caldeira | Product & Software Engineering';
+const absolute = (l: Locale) => new URL(localePath(l), Astro.site).href;
+---
+
+<!doctype html>
+<html lang={htmlLang[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={t('hero.lead')} />
+    <link rel="canonical" href={absolute(lang)} />
+    {locales.map((l) => (
+      <link rel="alternate" hreflang={htmlLang[l]} href={absolute(l)} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={absolute(defaultLocale)} />
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&display=swap"
+    />
+  </head>
+  <body>
+    <a class="skip" href="#main">
+      {t('skip')}
+    </a>
+    <canvas id="signal" aria-hidden="true"></canvas>
+    <div class="progress" aria-hidden="true"></div>
+    <Nav lang={lang} />
+    <div class="page" lang={htmlLang[lang]}>
+      <main id="main">
+        <slot />
+      </main>
+      <Footer lang={lang} />
+    </div>
+  </body>
+</html>

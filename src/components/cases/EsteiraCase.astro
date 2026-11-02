@@ -1,0 +1,250 @@
+---
+import { dictionaries, useTranslations, type Locale } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const steps = [
+  'es.s1',
+  'es.s2',
+  'es.s3',
+  'es.s4',
+  'es.s5',
+  'es.s6',
+  'es.s7',
+  'es.s8',
+  'es.s9',
+  'es.s10',
+  'es.s11',
+  'es.s12',
+  'es.s13',
+  'es.s14',
+  'es.s15',
+  'es.s16',
+] as const;
+---
+
+<article class="panel wrap" id="caso-esteira">
+  <div class="container">
+    <div class="panel__body">
+      <h3 class="panel__title">{t('es.t')}</h3>
+      <p class="panel__meta">{t('es.meta')}</p>
+      <p class="panel__lede">{t('es.lede')}</p>
+      <ul class="gains" aria-label={t('aria.gains1')}>
+        <li>
+          <strong>+250%</strong>
+          <span>{t('es.g1')}</span>
+        </li>
+        <li>
+          <strong>+60%</strong>
+          <span>{t('es.g2')}</span>
+        </li>
+        <li>
+          <strong>−60%</strong>
+          <span>{t('es.g3')}</span>
+        </li>
+      </ul>
+    </div>
+    <figure
+      class="flow"
+      id="flow-esteira"
+      aria-labelledby="flow-esteira-cap"
+      data-labels={JSON.stringify(dictionaries[lang].flow)}
+    >
+      <figcaption class="flow__cap">
+        <span id="flow-esteira-cap">{t('es.cap')}</span>
+        <ul class="flow__legend" aria-hidden="true">
+          <li>
+            <svg viewBox="0 0 12 12" width="12" height="12">
+              <circle class="lg-h" cx="6" cy="6" r="4.5"></circle>
+            </svg>
+            <span>{t('lg.human')}</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 12 12" width="12" height="12">
+              <rect class="lg-g" x="2.5" y="2.5" width="7" height="7" transform="rotate(45 6 6)"></rect>
+            </svg>
+            <span>{t('lg.gate')}</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 12 12" width="12" height="12">
+              <rect class="lg-a" x="1.5" y="1.5" width="9" height="9" rx="1.5"></rect>
+            </svg>
+            <span>{t('lg.agent')}</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 12 12" width="12" height="12">
+              <rect class="lg-x" x="1.5" y="1.5" width="9" height="9" rx="1.5"></rect>
+            </svg>
+            <span>{t('lg.auto')}</span>
+          </li>
+        </ul>
+      </figcaption>
+      <div class="flow__stage" aria-hidden="true"></div>
+      <ol class="sr-only">
+        {steps.map((k) => (
+          <li>{t(k)}</li>
+        ))}
+      </ol>
+    </figure>
+    <div class="panel__body panel__body--tail"></div>
+  </div>
+</article>
+
+<style>
+  /* the esteira flow: two lanes (human / agent), gates as diamonds, one packet travelling the loop.
+     The SVG is built at runtime, so everything inside the stage is reached through :global(). */
+  .flow {
+    margin: 22px 0 0;
+    padding: 12px 14px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+  }
+  .flow__stage {
+    margin-top: 10px;
+  }
+  .flow__stage :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .flow:global(.flow--v) .flow__stage {
+    max-width: 420px;
+    margin-inline: auto;
+  }
+  .flow :global(svg text) {
+    font-family: var(--font-mono);
+  }
+  .flow :global(.fl-lbl) {
+    font-size: 11px;
+    fill: var(--text-dim);
+    transition: fill 0.35s;
+  }
+  .flow :global(.fl-lbl--s) {
+    font-size: 10px;
+  }
+  .flow :global(.fl-lbl.is-on) {
+    fill: var(--text);
+  }
+  .flow :global(:is(.fl-stage, .fl-lane, .fl-loop-t)) {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    fill: var(--text-faint);
+  }
+  .flow :global(.fl-pr-t) {
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    fill: var(--accent);
+    font-weight: 500;
+  }
+  .flow :global(.fl-guide) {
+    stroke: var(--line);
+    stroke-dasharray: 2 6;
+  }
+  .flow :global(.fl-br) {
+    fill: none;
+    stroke: var(--line-strong);
+  }
+  .flow :global(.fl-path) {
+    fill: none;
+    stroke: var(--line-strong);
+    stroke-width: 1.25;
+  }
+  .flow :global(.fl-arrow) {
+    fill: var(--line-strong);
+  }
+  .flow :global(.fl-trail) {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0;
+  }
+  .flow:global(.is-live) :global(.fl-trail) {
+    opacity: 0.75;
+  }
+  .flow :global(.fl-pr) {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+    opacity: 0.7;
+  }
+  .flow :global(.fl-mask) {
+    fill: var(--surface);
+  }
+  .flow :global(.fn *) {
+    transition:
+      fill 0.35s,
+      stroke 0.35s;
+  }
+  .flow :global(.fn--h circle) {
+    fill: var(--surface);
+    stroke: var(--text);
+    stroke-width: 1.5;
+  }
+  .flow :global(.fn--h.is-on circle) {
+    fill: var(--text);
+  }
+  .flow :global(.fn--gate .fn-shape) {
+    fill: var(--surface);
+    stroke: var(--text);
+    stroke-width: 1.5;
+  }
+  .flow :global(.fn--gate.is-on .fn-shape) {
+    fill: var(--accent-fill);
+    stroke: var(--accent);
+  }
+  .flow :global(.fn--a .fn-shape) {
+    fill: var(--surface-2);
+    stroke: var(--accent);
+    stroke-width: 1.5;
+  }
+  .flow :global(.fn--a.is-on .fn-shape) {
+    fill: var(--accent-fill);
+  }
+  .flow :global(.fn--x .fn-shape) {
+    fill: var(--surface);
+    stroke: var(--text-dim);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 2;
+  }
+  .flow :global(.fn--x.is-on .fn-shape) {
+    stroke: var(--accent);
+    fill: var(--surface-2);
+  }
+  .flow :global(.fn-badge) {
+    fill: var(--accent-fill);
+    stroke: var(--surface);
+    stroke-width: 1;
+  }
+  .flow :global(.fl-ring) {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    opacity: 0;
+  }
+  .flow :global(.fl-pkt) {
+    visibility: hidden;
+  }
+  .flow:global(.is-live) :global(.fl-pkt) {
+    visibility: visible;
+  }
+  .flow :global(.fl-pkt rect) {
+    fill: var(--accent-fill);
+    stroke: var(--bg);
+    stroke-width: 1;
+  }
+  @media (min-width: 900px) and (max-height: 820px) {
+    .flow {
+      margin-top: 14px;
+      padding-block: 10px 6px;
+    }
+  }
+</style>

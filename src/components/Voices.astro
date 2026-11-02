@@ -1,0 +1,81 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+/** Public LinkedIn recommendations, kept verbatim in the language they were written in. */
+const quotes = [
+  {
+    lang: 'pt-BR',
+    author: 'vo.a1',
+    text: 'Quando você se encontrar nos maiores desafios e atua com esse cara, você sempre terá alguém com quem contar ao seu lado, na trincheira, mão na massa.',
+  },
+  {
+    lang: 'es',
+    author: 'vo.a2',
+    text: 'Logra liderar desde una posición de sociedad, formando un fuerte lazo con su equipo que garantiza que, cuando las dificultades llegan, sea posible atravesarlas con éxito.',
+  },
+  { lang: 'pt-BR', author: 'vo.a3', text: 'Victor é um profissional de missão, é só alinhar e deixar na mão dele.' },
+] as const;
+---
+
+<section class="voices wrap" id="vozes" aria-labelledby="vozes-h">
+  <div class="container">
+    <h2 class="h2" id="vozes-h">
+      {t('vo.h')}
+    </h2>
+    <div class="voices__grid">
+      {quotes.map((q) => (
+        <div class="voice">
+          <blockquote lang={q.lang}>{q.text}</blockquote>
+          <p>{t(q.author)}</p>
+        </div>
+      ))}
+    </div>
+    <p class="voices__note">{t('vo.note')}</p>
+  </div>
+</section>
+
+<style>
+  .voices {
+    padding-block: var(--section-space);
+  }
+  .voices__grid {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+  }
+  .voice blockquote {
+    font-size: clamp(1.1rem, 1rem + 0.5vw, 1.4rem);
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+  .voice blockquote::before {
+    content: '“';
+    color: var(--accent);
+  }
+  .voice blockquote::after {
+    content: '”';
+    color: var(--accent);
+  }
+  .voice p {
+    margin-top: 14px;
+    color: var(--text-dim);
+    font-size: 0.9375rem;
+  }
+  .voices__note {
+    margin-top: 40px;
+    color: var(--text-faint);
+    font-size: 0.875rem;
+  }
+  @media (max-width: 899px) {
+    .voices__grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+</style>
