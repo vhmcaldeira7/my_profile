@@ -13,7 +13,7 @@ Use Astro with `output: 'static'` and TypeScript on the `strictest` preset.
 
 - Each section is an `.astro` component with scoped styles. `scopedStyleStrategy: 'where'` keeps the specificity of a plain class, so the cascade behaves like the original single stylesheet.
 - Client behaviour lives in plain TypeScript modules under `src/scripts/`, bundled by Vite and loaded from one `<script>` in the layout. There is no UI framework runtime.
-- `site` and `base` target `https://vhmcaldeira7.github.io/my_profile/`.
+- `site` is `https://victorcaldeira.com` and `base` is `/`. Links and routes are built from `import.meta.env.BASE_URL`, so a move back under a sub-path only changes the config.
 - `compressHTML` is off, so the whitespace between inline elements stays as written and line breaks match the prototype pixel for pixel.
 
 ## Consequences

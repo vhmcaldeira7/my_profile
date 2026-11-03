@@ -2,7 +2,7 @@
  * Lighthouse CI against the built site (mobile emulation, Lighthouse defaults), median of 3 runs per route.
  * Thresholds are documented in the README; see "Quality gates".
  */
-const base = 'http://127.0.0.1:4322/my_profile/';
+const base = 'http://127.0.0.1:4322/';
 
 module.exports = {
   ci: {

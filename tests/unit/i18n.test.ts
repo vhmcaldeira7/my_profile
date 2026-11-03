@@ -39,6 +39,9 @@ describe.each([
 
 describe('localePath', () => {
   it('serves PT at the base and the others in their own folder', () => {
+    expect(localePath('pt', '/')).toBe('/');
+    expect(localePath('en', '/')).toBe('/en/');
+    expect(localePath('es', '/')).toBe('/es/');
     expect(localePath('pt', '/my_profile/')).toBe('/my_profile/');
     expect(localePath('en', '/my_profile/')).toBe('/my_profile/en/');
     expect(localePath('es', '/my_profile')).toBe('/my_profile/es/');

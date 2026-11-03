@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
 
 const routes = [
-  { path: '', canonical: 'https://vhmcaldeira7.github.io/my_profile/' },
-  { path: 'en/', canonical: 'https://vhmcaldeira7.github.io/my_profile/en/' },
-  { path: 'es/', canonical: 'https://vhmcaldeira7.github.io/my_profile/es/' },
+  { path: '', canonical: 'https://victorcaldeira.com/' },
+  { path: 'en/', canonical: 'https://victorcaldeira.com/en/' },
+  { path: 'es/', canonical: 'https://victorcaldeira.com/es/' },
 ] as const;
 
 for (const r of routes)
@@ -76,14 +76,14 @@ test('the copy button confirms and announces the copy, then resets', async ({ pa
 test('switching language keeps the current section', async ({ page }) => {
   await page.goto('#trajetoria');
   await page.locator('.lang a[data-locale="en"]').click();
-  await expect(page).toHaveURL(/\/my_profile\/en\/#trajetoria$/);
+  await expect(page).toHaveURL(/\/en\/#trajetoria$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 });
 
 for (const l of ['en', 'es'] as const)
   test(`legacy /?lang=${l} redirects to /${l}/`, async ({ page }) => {
     await page.goto(`?lang=${l}`);
-    await expect(page).toHaveURL(new RegExp(`/my_profile/${l}/$`));
+    await expect(page).toHaveURL(new RegExp(`/${l}/$`));
     await expect(page.locator('html')).toHaveAttribute('lang', l);
   });
 
@@ -92,6 +92,6 @@ test('unknown paths get the 404 page with links to the three routes', async ({ p
   expect(res?.status()).toBe(404);
   await expect(page.locator('h1')).toHaveText('Victor Caldeira');
   await expect(page.locator('main a')).toHaveCount(3);
-  for (const [i, href] of ['/my_profile/', '/my_profile/en/', '/my_profile/es/'].entries())
+  for (const [i, href] of ['/', '/en/', '/es/'].entries())
     await expect(page.locator('main a').nth(i)).toHaveAttribute('href', href);
 });

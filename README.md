@@ -2,7 +2,7 @@
 
 Victor Caldeira's personal portfolio: a single page about delivering software with teams and AI agents, in Portuguese, English and Spanish. It is a static Astro site. The page is complete as plain HTML and CSS; a particle field, scroll-driven motion and animated figures are layered on top when the device and the visitor's motion preference allow it.
 
-**Live:** https://vhmcaldeira7.github.io/my_profile/ ([EN](https://vhmcaldeira7.github.io/my_profile/en/) · [ES](https://vhmcaldeira7.github.io/my_profile/es/))
+**Live:** https://victorcaldeira.com/ ([EN](https://victorcaldeira.com/en/) · [ES](https://victorcaldeira.com/es/))
 
 ## Stack
 
@@ -47,9 +47,9 @@ Node 22 (Astro 7 needs at least 22.23.4; see `.nvmrc`).
 
 ```sh
 npm ci
-npm run dev              # http://localhost:4321/my_profile/
+npm run dev              # http://localhost:4321/
 npm run build            # static output in dist/
-npm run preview          # serve dist/ under /my_profile/
+npm run preview          # serve dist/ locally
 
 npm run lint             # ESLint
 npm run format:check     # Prettier

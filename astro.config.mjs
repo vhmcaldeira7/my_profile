@@ -1,10 +1,10 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// Served by GitHub Pages as a project site, so every URL lives under /my_profile/.
+// Served by GitHub Pages on the custom domain, at its root. Code reads the base from import.meta.env.BASE_URL.
 export default defineConfig({
-  site: 'https://vhmcaldeira7.github.io',
-  base: '/my_profile/',
+  site: 'https://victorcaldeira.com',
+  base: '/',
   trailingSlash: 'always',
   output: 'static',
   // Scoped styles keep the selector specificity of a plain class, so the cascade matches a single global sheet.
