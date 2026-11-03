@@ -32,7 +32,7 @@ function rasterInitials(): InitialsRaster {
   g.fillStyle = '#fff';
   g.textAlign = 'center';
   g.textBaseline = 'middle';
-  g.font = '650 condensed 54px "Bricolage Grotesque", "Arial Narrow", sans-serif';
+  g.font = '650 condensed 54px "Bricolage Grotesque Variable", "Bricolage Grotesque", "Arial Narrow", sans-serif';
   g.fillText('VC', W / 2, H / 2 + 2);
   const d = g.getImageData(0, 0, W, H).data,
     cells: [number, number][] = [];
