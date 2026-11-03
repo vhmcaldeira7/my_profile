@@ -50,5 +50,8 @@ const absolute = (l: Locale) => new URL(localePath(l), Astro.site).href;
       </main>
       <Footer lang={lang} />
     </div>
+    <script>
+      import '../scripts/main';
+    </script>
   </body>
 </html>
