@@ -9,6 +9,7 @@ Victor Caldeira's personal portfolio: a single page about delivering software wi
 - [Astro](https://astro.build) 7, `output: 'static'`, TypeScript on the `strictest` preset
 - [three.js](https://threejs.org) for the particle field, with custom GLSL shaders
 - [GSAP](https://gsap.com) + ScrollTrigger for the scroll choreography and figure timelines, [Lenis](https://lenis.darkroom.engineering) for smooth scrolling
+- Fonts self-hosted from [Fontsource](https://fontsource.org) (Bricolage Grotesque, Geist, Geist Mono), so the site makes no third-party requests
 - Vitest, Playwright, axe-core and Lighthouse CI for tests
 - ESLint (typescript-eslint, eslint-plugin-astro), Prettier and `astro check` for linting and type checks
 - GitHub Actions builds and tests every PR and deploys to GitHub Pages
@@ -64,11 +65,11 @@ The first Playwright run needs `npx playwright install chromium`.
 
 Every PR and every push to `main` runs `.github/workflows/ci.yml`:
 
-| Job        | What it checks                                                                                                                                                                                                              |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| quality    | ESLint, Prettier, `astro check`, Vitest, `astro build`                                                                                                                                                                      |
-| e2e        | `/`, `/en/`, `/es/` at 1440×900 and 390×844: no console errors, no horizontal overflow, 43 sphere chips with 12 starred, language links to the right routes with hreflang alternates, no serious or critical axe violations |
-| lighthouse | Median of 3 runs per route, mobile emulation                                                                                                                                                                                |
+| Job        | What it checks                                                                                                                                                                                                                                                                                                                                                                          |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| quality    | ESLint, Prettier, `astro check`, Vitest, `astro build`                                                                                                                                                                                                                                                                                                                                  |
+| e2e        | `/`, `/en/`, `/es/` at 1440×900 and 390×844: no console errors, no horizontal overflow, 43 sphere chips with 12 starred, language links and canonicals, hreflang alternates, no serious or critical axe violations; plus reduced motion (static figures), no JavaScript (content and the terms list), the copy button, the language hash, the legacy `?lang=` redirect and the 404 page |
+| lighthouse | Median of 3 runs per route, mobile emulation                                                                                                                                                                                                                                                                                                                                            |
 
 Lighthouse minimum scores:
 
@@ -81,11 +82,11 @@ Lighthouse minimum scores:
 
 Performance is held at 0.85 rather than higher on purpose. CI runners are noisy, and the page is built around a WebGL scene. Headless Chrome renders WebGL in software, and the boot code skips the particle field on software renderers, so Lighthouse measures the page without the 3D scene. The scene is a separate lazy chunk (~140 kB gzip) that loads after `load`, on idle, and only on hardware WebGL2.
 
-`deploy.yml` builds and publishes `dist/` to GitHub Pages on every push to `main`, using `actions/deploy-pages`.
+`deploy.yml` runs only after a CI run on a push to `main` succeeds. It checks out the commit CI tested, builds it and publishes `dist/` with `actions/deploy-pages`. A manual run is accepted from `main` only. Only the deploy job gets `pages: write` and `id-token: write`. Every action is pinned to a commit SHA, and CI builds `dist/` once and shares it with the e2e and Lighthouse jobs.
 
 ## Internationalisation
 
-- Each language is a real route: PT at `/`, EN at `/en/`, ES at `/es/`. The switcher in the nav links to the matching route. Each page sets `<html lang>`, a canonical URL and `hreflang` alternates, including `x-default`.
+- Each language is a real route: PT at `/`, EN at `/en/`, ES at `/es/`. The switcher in the nav links to the matching route; with JavaScript, it also keeps the current section (`#hash`). The prototype's `/?lang=en|es` links redirect to the route, and unknown paths get a 404 page linking to all three. Each page sets `<html lang>`, a canonical URL and `hreflang` alternates, including `x-default`.
 - The copy lives in `src/i18n/{pt,en,es}.json` with identical keys. PT is the reference. `useTranslations(locale)` returns a `t()` typed to the PT keys. A unit test fails when EN or ES is missing a PT key or has an extra one.
 - Labels the scripts draw at runtime, such as the flow figure's steps and the copy button's states, are rendered into `data-*` attributes from the route's dictionary.
 - Proper names, the sphere's terms and the recommendation quotes are not translated. The quotes stay in the language they were written in, marked with `lang`.
