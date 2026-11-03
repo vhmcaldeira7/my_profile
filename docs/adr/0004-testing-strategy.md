@@ -11,12 +11,12 @@ A portfolio is tested by eye, but this one is also a showcase of how its owner s
 
 Use four layers, each checking what it can see best:
 
-| Layer      | Tool                                | Checks                                                                                                                                                                                                                                   |
-| ---------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Static     | ESLint, Prettier, `astro check`     | types, templates, style                                                                                                                                                                                                                  |
-| Unit       | Vitest                              | pure modules (sphere math, flow geometry, formatting, seeded formations) and dictionary completeness                                                                                                                                     |
-| End to end | Playwright + `@axe-core/playwright` | the built preview under `/my_profile/`, on `/`, `/en/` and `/es/`, at 1440×900 and 390×844: console errors, horizontal overflow, the sphere's 43 chips (12 starred), language links, hreflang, and no serious or critical axe violations |
-| Budget     | Lighthouse CI                       | median of 3 runs per route; minimum scores in the README                                                                                                                                                                                 |
+| Layer      | Tool                                | Checks                                                                                                                                                                                                              |
+| ---------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Static     | ESLint, Prettier, `astro check`     | types, templates, style                                                                                                                                                                                             |
+| Unit       | Vitest                              | pure modules (sphere math, flow geometry, formatting, seeded formations) and dictionary completeness                                                                                                                |
+| End to end | Playwright + `@axe-core/playwright` | the built preview, on `/`, `/en/` and `/es/`, at 1440×900 and 390×844: console errors, horizontal overflow, the sphere's 43 chips (12 starred), language links, hreflang, and no serious or critical axe violations |
+| Budget     | Lighthouse CI                       | median of 3 runs per route; minimum scores in the README                                                                                                                                                            |
 
 All of them run in CI on every PR. A PR is done when CI is green.
 
