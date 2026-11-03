@@ -1,4 +1,7 @@
 ---
+import '@fontsource-variable/bricolage-grotesque/standard.css';
+import '@fontsource-variable/geist/wght.css';
+import '@fontsource-variable/geist-mono/wght.css';
 import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/figures.css';
@@ -30,12 +33,14 @@ const absolute = (l: Locale) => new URL(localePath(l), Astro.site).href;
     ))}
     <link rel="alternate" hreflang="x-default" href={absolute(defaultLocale)} />
     <link rel="icon" href="data:," />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&display=swap"
-    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={t('hero.lead')} />
+    <meta property="og:url" content={absolute(lang)} />
+    <meta property="og:locale" content={htmlLang[lang].replace('-', '_')} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={t('hero.lead')} />
   </head>
   <body>
     <a class="skip" href="#main">
