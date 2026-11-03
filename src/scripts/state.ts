@@ -4,6 +4,7 @@
  */
 export interface Lenisish {
   destroy(): void;
+  scrollTo(target: Element | number, options?: { immediate?: boolean; force?: boolean }): void;
 }
 
 export interface SharedState {

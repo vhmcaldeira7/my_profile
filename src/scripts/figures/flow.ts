@@ -15,10 +15,25 @@ export interface FlowFigure {
   destroy(): void;
 }
 
+const inert: FlowFigure = { play: () => () => {}, destroy: () => {} };
+
+/** Labels rendered by the page from the route's dictionary; null when missing or malformed. */
+function readLabels(fig: HTMLElement): FlowLabels | null {
+  try {
+    const parsed = JSON.parse(fig.dataset['labels'] ?? '') as Partial<FlowLabels> | null;
+    return parsed && Array.isArray(parsed.steps) && Array.isArray(parsed.stages) ? (parsed as FlowLabels) : null;
+  } catch {
+    return null;
+  }
+}
+
 export function initFlow(fig: HTMLElement): FlowFigure {
   const stage = fig.querySelector<HTMLElement>('.flow__stage');
-  if (!stage) throw new Error('flow: missing .flow__stage');
-  const labels = JSON.parse(fig.dataset['labels'] ?? '{}') as FlowLabels;
+  const labels = readLabels(fig);
+  if (!stage || !labels) {
+    console.error('flow: missing stage or labels; the figure stays empty');
+    return inert;
+  }
 
   const el = <K extends keyof SVGElementTagNameMap>(tag: K, attrs: Attrs, parent: Element): SVGElementTagNameMap[K] => {
     const n = document.createElementNS(NS, tag);
