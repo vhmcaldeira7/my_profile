@@ -1,0 +1,388 @@
+---
+import { useTranslations, type Locale } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+/** Three racks of eight slats each; x is the rack's left edge in SVG units. */
+const racks = [16, 52, 88];
+const slats = [51, 62, 73, 84, 95, 106, 117, 128];
+const nodes = [
+  [214, 84],
+  [232, 90],
+  [250, 84],
+  [268, 90],
+  [286, 84],
+  [223, 68],
+  [241, 62],
+  [259, 68],
+  [277, 64],
+  [232, 48],
+  [250, 44],
+  [268, 50],
+];
+const lanes = ['a', 'b', 'c'];
+---
+
+<article class="panel wrap" id="caso-infra">
+  <div class="container">
+    <div class="panel__body">
+      <h3 class="panel__title">{t('in.t')}</h3>
+      <p class="panel__meta">{t('in.meta')}</p>
+      <p class="panel__lede">{t('in.lede')}</p>
+      <figure class="infra" id="infra" aria-labelledby="infra-cap">
+        <figcaption class="flow__cap">
+          <span id="infra-cap">{t('in.cap')}</span>
+          <ul class="flow__legend" aria-hidden="true">
+            <li>
+              <svg viewBox="0 0 12 12" width="12" height="12">
+                <rect class="lg-rack" x="2.5" y="1.5" width="7" height="9" rx="1" />
+                <path class="lg-rack-l" d="M4 4.5h4M4 7.5h4" />
+              </svg>
+              <span>datacenter</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 12 12" width="12" height="12">
+                <path class="lg-cloud" d="M3.4 9.5h5.6a1.9 1.9 0 0 0 .3-3.8 2.6 2.6 0 0 0 -5 -.9 2 2 0 0 0 -.9 4.7z" />
+              </svg>
+              <span>{t('lg.cloud')}</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 12 12" width="12" height="12">
+                <rect class="lg-pkt" x="3.5" y="3.5" width="5" height="5" rx="1" />
+              </svg>
+              <span>{t('lg.load')}</span>
+            </li>
+          </ul>
+        </figcaption>
+        <div class="infra__top" aria-hidden="true">
+          <p class="infra__budget">
+            <small class="infra__k">{t('in.k')}</small>
+            <b class="infra__n" data-n="15">
+              R$ 15 M
+            </b>
+            <span>{t('in.per')}</span>
+          </p>
+          <div class="infra__stage">
+            <svg viewBox="0 0 320 150" role="presentation">
+              <path class="in-path" data-path="a" d="M30 46C30 6 150 -4 206 70" />
+              <path class="in-path" data-path="b" d="M66 46C66 14 166 4 212 74" />
+              <path class="in-path" data-path="c" d="M102 46C102 22 176 14 218 78" />
+              {racks.map((x) => (
+                <g class="in-rack-g">
+                  <rect class="in-rack" x={x} y="46" width="28" height="98" rx="2" />
+                  {slats.map((y) => (
+                    <g class="in-slat">
+                      <rect x={x + 4} y={y} width="20" height="7" rx="1" />
+                      <circle cx={x + 21} cy={y + 3.5} r="1.2" />
+                    </g>
+                  ))}
+                </g>
+              ))}
+              <path
+                class="in-cloud"
+                d="M196 104h94a22 22 0 0 0 4-43.6 31 31 0 0 0 -57 -14.4 25 25 0 0 0 -43 18 20 20 0 0 0 2 40z"
+              />
+              <g class="in-nodes">
+                {nodes.map(([cx, cy]) => (
+                  <circle class="in-node" cx={cx} cy={cy} r="2.2" />
+                ))}
+              </g>
+              <g class="in-pkts">
+                {lanes.flatMap((p) =>
+                  [0, 1, 2].map(() => <rect class="in-pkt" data-path={p} x="-3" y="-3" width="6" height="6" rx="1" />),
+                )}
+              </g>
+            </svg>
+          </div>
+        </div>
+        <p class="infra__k infra__k--cut" aria-hidden="true">
+          <span>{t('in.cut')}</span>{' '}
+          <span class="infra__kl">
+            <i class="infra__sw infra__sw--keep"></i>
+            <span>{t('in.keep')}</span> <i class="infra__sw infra__sw--cut"></i>
+            <span>{t('in.cutk')}</span>
+          </span>
+        </p>
+        <ol class="infra__meters" aria-hidden="true">
+          <li class="meter" data-cut=".6">
+            <span class="meter__track"></span>
+            <b class="meter__n">−60%</b>
+            <span class="meter__co">EIVE ERP · DB1 · 2016–2021</span>
+            <i class="meter__note">{t('in.note')}</i>
+          </li>
+          <li class="meter" data-cut=".4">
+            <span class="meter__track"></span>
+            <b class="meter__n">−40%</b>
+            <span class="meter__co">ANYMARKET · 2021–2024</span>
+          </li>
+          <li class="meter" data-cut=".5">
+            <span class="meter__track"></span>
+            <b class="meter__n">−50%</b>
+            <span class="meter__co">Greenn Pagamentos · 2025–2026</span>
+          </li>
+        </ol>
+        <ol class="sr-only">
+          <li>{t('in.s1')}</li>
+          <li>{t('in.s2')}</li>
+          <li>{t('in.s3')}</li>
+          <li>{t('in.s4')}</li>
+        </ol>
+      </figure>
+    </div>
+  </div>
+</article>
+
+<style>
+  /* the infra figure: three racks drain into a cloud, three bills shrink, the budget counts up */
+  .infra {
+    margin: 22px 0 0;
+    padding: 12px 14px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+  }
+  .infra__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px 24px;
+    align-items: center;
+    margin-top: 14px;
+  }
+  .infra__budget {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+  }
+  .infra__k {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .infra__k--cut {
+    margin: 18px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  .infra__kl {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    margin-left: 10px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text-faint);
+  }
+  .infra__sw {
+    display: inline-block;
+    width: 14px;
+    height: 6px;
+    border-radius: var(--radius);
+  }
+  .infra__sw--keep {
+    background: var(--text-dim);
+  }
+  .infra__sw--cut {
+    margin-left: 6px;
+    background: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--accent) 55%, transparent) 0 2px,
+      transparent 2px 5px
+    );
+    outline: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+  .infra__n {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--accent);
+    font-size: clamp(2rem, 1.3rem + 2.2vw, 3rem);
+    line-height: 1;
+    letter-spacing: -0.045em;
+    word-spacing: -0.3em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .infra__budget span {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--text-dim);
+    max-width: 22ch;
+  }
+  .infra__stage svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .in-rack {
+    fill: var(--surface-2);
+    stroke: var(--line-strong);
+    stroke-width: 1;
+  }
+  .in-slat rect {
+    fill: var(--surface);
+    stroke: var(--text);
+    stroke-width: 1;
+    transition:
+      fill 0.4s,
+      stroke 0.4s;
+  }
+  .in-slat circle {
+    fill: var(--accent);
+    transition: fill 0.4s;
+  }
+  .in-slat:global(.is-off) rect {
+    fill: transparent;
+    stroke: var(--line);
+  }
+  .in-slat:global(.is-off) circle {
+    fill: var(--line);
+  }
+  .in-path {
+    fill: none;
+    stroke: var(--line-strong);
+    stroke-width: 1;
+  }
+  .in-cloud {
+    fill: var(--surface);
+    stroke: var(--line-strong);
+    stroke-width: 1.25;
+    stroke-linejoin: round;
+    transition:
+      fill 0.5s,
+      stroke 0.5s;
+  }
+  .in-cloud:global(.is-on) {
+    fill: color-mix(in srgb, var(--accent-fill) 12%, var(--surface));
+    stroke: var(--accent);
+  }
+  .in-node {
+    fill: var(--line);
+    transition: fill 0.35s;
+  }
+  .in-node:global(.is-on) {
+    fill: var(--accent);
+  }
+  .in-pkt {
+    fill: var(--accent);
+    visibility: hidden;
+  }
+  .infra:global(.is-live) .in-pkt:global(.is-on) {
+    visibility: visible;
+  }
+  .infra__meters {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px 16px;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .meter {
+    --fill: 1;
+    display: grid;
+    grid-template-areas: 'track' 'n' 'co' 'note';
+    align-content: start;
+    row-gap: 4px;
+    min-width: 0;
+  }
+  .meter__track {
+    grid-area: track;
+    position: relative;
+    height: 6px;
+    margin-bottom: 4px;
+    background: var(--surface-2);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .meter__track::before,
+  .meter__track::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .meter__track::before {
+    background: var(--text-dim);
+    transform-origin: 0 50%;
+    transform: scaleX(var(--fill));
+  }
+  .meter__track::after {
+    background: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--accent) 55%, transparent) 0 2px,
+      transparent 2px 5px
+    );
+    transform-origin: 100% 50%;
+    transform: scaleX(calc(1 - var(--fill)));
+  }
+  .meter__n {
+    grid-area: n;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .meter__co {
+    grid-area: co;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.35;
+    color: var(--text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .meter__note {
+    grid-area: note;
+    font-size: 0.75rem;
+    line-height: 1.35;
+    font-style: normal;
+    color: var(--text-dim);
+  }
+  @media (min-width: 560px) {
+    .infra__top {
+      grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 559px) {
+    .infra__meters {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 14px;
+    }
+    .meter {
+      grid-template-columns: 4.5rem minmax(0, 1fr);
+      grid-template-areas: 'n track' 'n co' 'n note';
+      column-gap: 12px;
+      row-gap: 2px;
+      align-items: start;
+    }
+    .meter__track {
+      margin: 6px 0 2px;
+    }
+    .meter__n {
+      font-size: 1.375rem;
+      padding-top: 1px;
+    }
+  }
+  @media (min-width: 900px) and (max-height: 820px) {
+    .infra {
+      margin-top: 14px;
+      padding-block: 10px 8px;
+    }
+    .infra__top {
+      margin-top: 10px;
+    }
+    .infra__meters {
+      margin-top: 12px;
+    }
+  }
+</style>

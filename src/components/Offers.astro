@@ -1,0 +1,117 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+---
+
+<section class="offers wrap" id="ofertas">
+  <div class="container">
+    <h2 class="h2">{t('of.h')}</h2>
+    <p class="sub">{t('of.sub')}</p>
+    <ul class="proof">
+      <li>
+        <span class="proof__t">{t('of.1t')}</span>
+        <span class="proof__label">{t('of.1')}</span>
+        <span class="proof__where">Greenn Pagamentos · 2025–2026</span>
+        <a class="ext" href="#caso-esteira">
+          {t('of.1a')}
+        </a>
+      </li>
+      <li>
+        <span class="proof__t">CTO as a Service.</span>
+        <span class="proof__label">{t('of.2')}</span>
+        <span class="proof__where">
+          Greenn Pagamentos · 2025–2026
+          <br />
+          ANYMARKET · 2021–2024
+          <br />
+          DB1 · 2016–2021
+        </span>
+        <a class="ext" href="#caso-desafios">
+          {t('of.2a')}
+        </a>
+      </li>
+      <li>
+        <span class="proof__t">{t('of.3t')}</span>
+        <span class="proof__label">{t('of.3')}</span>
+        <span class="proof__where">
+          Greenn Pagamentos · 2025–2026
+          <br />
+          ANYMARKET · 2021–2024
+        </span>
+        <a class="ext" href="#caso-infra">
+          {t('of.3a')}
+        </a>
+      </li>
+      <li>
+        <span class="proof__t">{t('of.4t')}</span>
+        <span class="proof__label">{t('of.4')}</span>
+        <span class="proof__where">
+          {t('of.4w')}
+          <br />
+          Greenn Pagamentos · 2025–2026 · xGROW
+        </span>
+        <a class="ext" href="#caso-desafios">
+          {t('of.4a')}
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .offers {
+    padding-block: var(--section-space) calc(var(--section-space) * 0.6);
+  }
+  .proof {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
+  }
+  .proof__t {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-stretch: 80%;
+    font-size: clamp(1.5rem, 1rem + 1.3vw, 2.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+  .proof li:first-child .proof__t {
+    color: var(--accent);
+  }
+  .proof__label {
+    display: block;
+    margin-top: 12px;
+    color: var(--text-dim);
+    font-size: 0.9375rem;
+    max-width: 32ch;
+  }
+  .proof__where {
+    display: block;
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .proof .ext {
+    display: inline-block;
+    margin-top: 12px;
+  }
+  @media (max-width: 767px) {
+    .proof {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: 36px;
+      gap: 20px;
+    }
+  }
+</style>

@@ -1,0 +1,130 @@
+---
+import { htmlLang, locales, localePath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<nav class="nav" aria-label={t('aria.nav')}>
+  <a class="nav__mark" href="#top">
+    Victor Caldeira
+  </a>
+  <div class="nav__links">
+    <a href="#casos">{t('nav.cases')}</a>
+    <a href="#trajetoria">{t('nav.career')}</a>
+    <a href="#metodo">{t('nav.skills')}</a>
+    <a class="nav__contact" href="#contato">
+      {t('nav.contact')}
+    </a>
+  </div>
+  <div class="lang" role="group" aria-label={t('aria.lang')}>
+    {locales.map((l) => (
+      <a
+        href={localePath(l)}
+        hreflang={htmlLang[l]}
+        lang={htmlLang[l]}
+        aria-current={l === lang ? 'page' : undefined}
+        data-locale={l}
+      >
+        {l.toUpperCase()}
+      </a>
+    ))}
+  </div>
+</nav>
+
+<style>
+  .nav {
+    position: fixed;
+    z-index: 20;
+    top: env(safe-area-inset-top, 0px);
+    left: var(--gutter-l);
+    right: var(--gutter-r);
+    max-width: var(--container);
+    margin: 12px auto 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 0 8px 0 18px;
+    background: color-mix(in srgb, var(--bg) 97%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .nav__mark {
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-stretch: 85%;
+    font-size: 1.1875rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    white-space: nowrap;
+    margin-right: auto;
+  }
+  .nav__links {
+    display: flex;
+    gap: 24px;
+    font-size: 0.9375rem;
+  }
+  .nav__links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav__links a:hover {
+    color: var(--text);
+  }
+  .lang {
+    display: inline-flex;
+    padding: 3px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--pill);
+  }
+  .lang a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: none;
+    text-decoration: none;
+    font: 500 0.8125rem/1 var(--font-mono);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    cursor: pointer;
+    min-width: 40px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: var(--pill);
+    color: var(--text-dim);
+  }
+  .lang a:hover {
+    color: var(--text);
+  }
+  .lang a[aria-current='page'] {
+    background: var(--text);
+    color: var(--bg);
+  }
+  @media (max-width: 719px) {
+    .nav {
+      gap: 12px;
+      padding-left: 14px;
+    }
+    .nav__links a:not(.nav__contact) {
+      display: none;
+    }
+    .lang a {
+      min-width: 32px;
+      padding: 0 6px;
+    }
+  }
+  @media (max-width: 389px) {
+    .nav__links {
+      display: none;
+    }
+  }
+</style>

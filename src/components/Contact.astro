@@ -1,0 +1,106 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+const linkedin = 'https://www.linkedin.com/in/victor-hugo-caldeira/';
+---
+
+<section class="contact wrap" id="contato" aria-labelledby="contato-h">
+  <div class="container">
+    <div class="contact__inner">
+      <h2 class="contact__h" id="contato-h">
+        {t('ct.h')}
+      </h2>
+      <p class="contact__sub">{t('ct.sub')}</p>
+      <p class="contact__link">
+        <a href={linkedin} target="_blank" rel="noopener">
+          linkedin.com/in/victor-hugo-caldeira
+        </a>
+      </p>
+      <div class="contact__actions">
+        <a class="btn btn--primary" href={linkedin} target="_blank" rel="noopener">
+          {t('ct.open')}
+        </a>
+        <button
+          class="btn btn--ghost"
+          type="button"
+          id="copy"
+          data-copy={linkedin}
+          data-label={t('copy')}
+          data-label-done={t('copied')}
+        >
+          {t('copy')}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* contact: the free band above the heading is where the initials assemble */
+  .contact {
+    min-height: calc(100dvh - 76px);
+    display: flex;
+    align-items: flex-end;
+    padding-block: 120px 72px;
+    text-align: center;
+  }
+  .contact__inner {
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+    width: 100%;
+  }
+  .contact__h {
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-stretch: 78%;
+    font-size: clamp(2.1rem, 1.1rem + 2.6vw, 3.75rem);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    max-width: 17ch;
+    text-wrap: balance;
+  }
+  .contact__sub {
+    max-width: 40rem;
+    color: var(--text-dim);
+  }
+  .contact__link {
+    margin-top: 8px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-stretch: 85%;
+    font-size: clamp(1.5rem, 0.6rem + 3.2vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+  .contact__link a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .contact__link a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.12em;
+  }
+  .contact__actions {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  @media (max-width: 767px) {
+    .contact {
+      padding-bottom: 48px;
+    }
+    .contact__inner {
+      gap: 12px;
+    }
+  }
+</style>

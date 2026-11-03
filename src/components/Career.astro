@@ -1,0 +1,172 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+---
+
+<section class="career" id="trajetoria" aria-labelledby="trajetoria-h">
+  <div class="career__head wrap">
+    <div class="container">
+      <h2 class="h2" id="trajetoria-h">
+        {t('ca.h')}
+      </h2>
+      <p class="sub">{t('ca.sub')}</p>
+    </div>
+  </div>
+  <div class="career__track">
+    <div class="job">
+      <span class="job__period">{t('p.now')}</span>
+      <h3 class="job__title">
+        CTO <span class="job__org">· Greenn Pagamentos</span>
+      </h3>
+      <p>{t('jd.greenn')}</p>
+    </div>
+    <div class="job">
+      <span class="job__period">{t('p.totvs')}</span>
+      <h3 class="job__title">
+        Group Product Manager <span class="job__org">· TOTVS</span>
+      </h3>
+    </div>
+    <div class="job">
+      <span class="job__period">{t('p.any')}</span>
+      <h3 class="job__title">
+        CTO <span class="job__org">· ANYMARKET</span>
+      </h3>
+      <p>{t('jd.any')}</p>
+    </div>
+    <div class="job">
+      <span class="job__period">{t('p.db1')}</span>
+      <h3 class="job__title">
+        {t('j.db1')} <span class="job__org">· DB1</span>
+      </h3>
+      <p>{t('jd.db1')}</p>
+    </div>
+    <div class="job">
+      <span class="job__period">{t('p.elo')}</span>
+      <h3 class="job__title">
+        {t('j.elo')} <span class="job__org">· Elotech</span>
+      </h3>
+      <p>{t('jd.elo')}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* career: vertical list; a horizontal pan on tall desktop viewports (the script adds .is-pan) */
+  .career {
+    padding-block: var(--section-space);
+  }
+  .career__head {
+    margin-bottom: 56px;
+  }
+  .career__track {
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-left: var(--gutter-l);
+    padding-right: var(--gutter-r);
+    display: grid;
+    gap: 56px;
+  }
+  @media (min-width: 1024px) {
+    .career__track {
+      padding-inline: calc(var(--gutter-l) + 32px) calc(var(--gutter-r) + 32px);
+    }
+  }
+  .job {
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 1fr);
+    column-gap: 32px;
+    align-items: baseline;
+  }
+  .job__period {
+    grid-row: span 2;
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .job:first-child .job__period {
+    color: var(--accent);
+  }
+  .job__title {
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-stretch: 80%;
+    font-size: clamp(1.6rem, 1.1rem + 1.2vw, 2.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+  .job__org {
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+  .job p {
+    margin-top: 14px;
+    max-width: 58ch;
+    color: var(--text-dim);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .career :is(.h2, .job) {
+    text-shadow:
+      0 0 6px var(--bg),
+      0 0 14px var(--bg),
+      0 0 28px var(--bg);
+  }
+  @media (max-width: 767px) {
+    .job {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .job__period {
+      grid-row: auto;
+      margin-bottom: 8px;
+    }
+  }
+  .career:global(.is-pan) {
+    height: 100dvh;
+    padding-block: 88px 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .career:global(.is-pan) .career__head {
+    margin-bottom: 40px;
+  }
+  .career:global(.is-pan) .career__track {
+    max-width: none;
+    margin: 0;
+    width: max-content;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    padding-left: max(var(--gutter-l), calc((100vw - var(--container)) / 2 + 32px));
+    padding-right: 12vw;
+  }
+  .career:global(.is-pan) .job {
+    display: block;
+    width: clamp(400px, 34vw, 520px);
+    padding-right: 64px;
+    flex: none;
+  }
+  .career:global(.is-pan) .job__period {
+    font-size: clamp(1.5rem, 1rem + 1.1vw, 2.25rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--text);
+  }
+  .career:global(.is-pan) .job:first-child .job__period {
+    color: var(--accent);
+  }
+  .career:global(.is-pan) .job__title {
+    margin-top: 18px;
+  }
+  .career:global(.is-pan) .job p {
+    font-size: 1rem;
+  }
+</style>

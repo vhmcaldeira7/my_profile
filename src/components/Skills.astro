@@ -1,0 +1,165 @@
+---
+import { chips } from '../data/skills';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+---
+
+<section class="how wrap" id="metodo" aria-labelledby="metodo-h">
+  <div class="container">
+    <h2 class="h2" id="metodo-h">
+      {t('kn.title')}
+    </h2>
+    <div class="how__stage">
+      <div class="orbit" id="orbit" role="group" aria-label={t('aria.orbit')}>
+        <ul class="orbit__tags">
+          {chips.map((c) => (
+            <li data-big={c.star ? '' : undefined}>{c.key ? t(c.key) : c.label}</li>
+          ))}
+        </ul>
+        <span class="orbit__core" aria-hidden="true">
+          {t('kn.core')}
+        </span>
+      </div>
+      <p class="how__hint">{t('kn.hint')}</p>
+    </div>
+    <div class="toolbox">
+      <div>
+        <h3>{t('tb.h1')}</h3>
+        <p>{t('tb.p1')}</p>
+      </div>
+      <div>
+        <h3>{t('tb.h2')}</h3>
+        <p>{t('tb.p2')}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* skills: the word sphere */
+  .how {
+    padding-block: var(--section-space);
+    text-shadow:
+      0 0 6px var(--bg),
+      0 0 14px var(--bg),
+      0 0 28px var(--bg);
+  }
+  .how__stage {
+    width: min(100%, 760px);
+    margin: 40px auto 0;
+  }
+  .how__hint {
+    margin-top: 12px;
+    font-size: 0.875rem;
+    color: var(--text-faint);
+    text-align: center;
+    visibility: hidden;
+  }
+  .how:global(.is-live) .how__hint {
+    visibility: visible;
+  }
+  /* until the script runs the chips are a flat wrap, then they only move by transform; starred terms carry the accent */
+  .orbit {
+    margin-top: 12px;
+    aspect-ratio: 1;
+    position: relative;
+    isolation: isolate;
+    container-type: inline-size;
+    touch-action: pan-y;
+  }
+  .orbit__tags {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    gap: 6px;
+  }
+  .orbit__tags li {
+    padding: 4px 7px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font: 500 clamp(11px, 2.2cqi, 16px)/1 var(--font-body);
+    white-space: nowrap;
+    color: var(--text-dim);
+  }
+  .orbit__tags [data-big] {
+    font-size: clamp(13px, 3cqi, 22px);
+    color: var(--accent);
+  }
+  .how:global(.is-live) .orbit {
+    cursor: grab;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .how:global(.is-live) .orbit:global(.is-drag) {
+    cursor: grabbing;
+  }
+  .how:global(.is-live) .orbit::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--bg) 86%, transparent) 72%, transparent);
+  }
+  .how:global(.is-live) .orbit__tags li {
+    border-color: transparent;
+    text-shadow: none;
+  }
+  .how:global(.is-live) .orbit__tags [data-big] {
+    text-shadow: 0 0 12px color-mix(in srgb, var(--accent-fill) 45%, transparent);
+  }
+  .orbit__core {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    z-index: 120;
+    display: none;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    place-items: center;
+    background: var(--accent-fill);
+    color: var(--accent-ink);
+    font: 650 0.6875rem/1 var(--font-body);
+    letter-spacing: 0.01em;
+    text-align: center;
+    box-shadow:
+      0 0 0 6px color-mix(in srgb, var(--accent-fill) 18%, transparent),
+      0 0 32px color-mix(in srgb, var(--accent-fill) 40%, transparent);
+  }
+  .how:global(.is-live) .orbit__core {
+    display: grid;
+  }
+  .toolbox {
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px;
+    max-width: 64rem;
+  }
+  .toolbox h3 {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  .toolbox p {
+    margin-top: 10px;
+    color: var(--text-dim);
+    max-width: 62ch;
+  }
+  @media (max-width: 767px) {
+    .toolbox {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-top: 56px;
+    }
+  }
+</style>

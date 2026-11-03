@@ -1,0 +1,36 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+import DesafiosCase from './cases/DesafiosCase.astro';
+import EsteiraCase from './cases/EsteiraCase.astro';
+import InfraCase from './cases/InfraCase.astro';
+import SecurityCase from './cases/SecurityCase.astro';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="casos" aria-labelledby="casos-h">
+  <div class="work__head wrap">
+    <div class="container">
+      <h2 class="h2" id="casos-h">
+        {t('cases.h')}
+      </h2>
+      <p class="sub">{t('cases.sub')}</p>
+    </div>
+  </div>
+  <EsteiraCase lang={lang} />
+  <DesafiosCase lang={lang} />
+  <SecurityCase lang={lang} />
+  <InfraCase lang={lang} />
+</section>
+
+<style>
+  /* cases: sticky stack, each shrinks away as the next arrives */
+  .work__head {
+    padding-block: calc(var(--section-space) * 0.6) 48px;
+  }
+</style>

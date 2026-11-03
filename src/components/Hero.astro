@@ -1,0 +1,79 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+---
+
+<section class="hero wrap" id="top">
+  <div class="container">
+    <div class="hero__copy">
+      <h1>{t('hero.h1')}</h1>
+      <p class="hero__lead">{t('hero.lead')}</p>
+      <p class="hero__sub">{t('hero.sub')}</p>
+      <div class="hero__ctas">
+        <a class="btn btn--primary" href="#casos">
+          {t('hero.cta')}
+        </a>
+        <a class="btn btn--ghost" href="#contato">
+          {t('nav.contact')}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: min(100dvh, 760px);
+    display: grid;
+    align-items: center;
+    padding-block: 112px 24px;
+  }
+  .hero__copy {
+    max-width: min(100%, 60rem);
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-stretch: 76%;
+    font-size: clamp(2.6rem, 0.9rem + 5vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    max-width: 11em;
+    text-wrap: balance;
+  }
+  .hero__lead {
+    margin-top: 24px;
+    max-width: 34rem;
+    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem);
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+  .hero__sub {
+    margin-top: 18px;
+    max-width: 36rem;
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    color: var(--text-dim);
+  }
+  .hero__ctas {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  @media (min-width: 1024px) {
+    .hero__copy {
+      max-width: 58%;
+    }
+  }
+  @media (max-width: 899px) {
+    .hero {
+      min-height: 0;
+      padding-block: 104px 48px;
+    }
+  }
+</style>
