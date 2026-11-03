@@ -13,7 +13,8 @@ export interface Playable {
 
 const $ = (id: string) => document.getElementById(id);
 
-export async function startScroll(figures: Playable[], onAnchor: boolean): Promise<void> {
+/** Starts the scroll layer; resolves to the function that reverts every trigger, tween and Lenis instance. */
+export async function startScroll(figures: Playable[], onAnchor: boolean): Promise<() => void> {
   const fine = finePointer();
   const [{ gsap }, { ScrollTrigger }, lenisModule] = await Promise.all([
     import('gsap'),
@@ -79,10 +80,10 @@ export async function startScroll(figures: Playable[], onAnchor: boolean): Promi
     panels.forEach(formation);
     const xp = $('trajetoria');
     dim(xp);
-    if (pan && xp) {
+    const track = xp?.querySelector<HTMLElement>('.career__track');
+    if (pan && xp && track) {
       xp.classList.add('is-pan');
-      const track = xp.querySelector<HTMLElement>('.career__track');
-      const dist = () => Math.max(0, (track?.scrollWidth ?? 0) - document.documentElement.clientWidth);
+      const dist = () => Math.max(0, track.scrollWidth - document.documentElement.clientWidth);
       state.pan = gsap.to(track, {
         x: () => -dist(),
         ease: 'none',
@@ -141,7 +142,8 @@ export async function startScroll(figures: Playable[], onAnchor: boolean): Promi
     pan: '(min-width: 900px) and (min-height: 720px)',
     motion: '(prefers-reduced-motion: no-preference)',
   };
-  gsap.matchMedia().add(conds, setup);
+  const mm = gsap.matchMedia();
+  mm.add(conds, setup);
   ScrollTrigger.sort();
   ScrollTrigger.refresh();
   void document.fonts.ready.then(() => ScrollTrigger.refresh());
@@ -149,24 +151,32 @@ export async function startScroll(figures: Playable[], onAnchor: boolean): Promi
   let howH = 0,
     howT = 0;
   const how = $('metodo');
-  if (how)
-    new ResizeObserver(([e]) => {
-      const h = Math.round(e?.contentRect.height ?? 0);
-      if (howH && h !== howH) {
-        clearTimeout(howT);
-        howT = window.setTimeout(() => ScrollTrigger.refresh(), 150);
-      }
-      howH = h;
-    }).observe(how);
+  const ro = new ResizeObserver(([e]) => {
+    const h = Math.round(e?.contentRect.height ?? 0);
+    if (howH && h !== howH) {
+      clearTimeout(howT);
+      howT = window.setTimeout(() => ScrollTrigger.refresh(), 150);
+    }
+    howH = h;
+  });
+  if (how) ro.observe(how);
   const anchor = onAnchor ? document.getElementById(location.hash.slice(1)) : null;
   if (anchor) {
-    const lenis = state.lenis as { scrollTo(t: Element, o: { immediate: boolean }): void } | null;
-    if (lenis) lenis.scrollTo(anchor, { immediate: true });
+    if (state.lenis) state.lenis.scrollTo(anchor, { immediate: true });
     else anchor.scrollIntoView({ behavior: 'instant' });
   }
+  return () => {
+    ro.disconnect();
+    clearTimeout(howT);
+    mm.revert();
+  };
 }
 
-let loading: Promise<void> | null = null;
-/** Loads and starts the scroll layer once; later calls share the same promise. */
-export const loadScroll = (figures: Playable[], onAnchor: boolean): Promise<void> =>
-  (loading ??= startScroll(figures, onAnchor).catch(() => {}));
+let loading: Promise<(() => void) | undefined> | null = null;
+/** Loads and starts the scroll layer once; later calls share the same promise. Resolves to its disposer. */
+export const loadScroll = (figures: Playable[], onAnchor: boolean): Promise<(() => void) | undefined> =>
+  (loading ??= startScroll(figures, onAnchor).catch((error: unknown) => {
+    // the page stays readable without the scroll layer, but a broken chunk must be visible
+    console.error('motion: the scroll layer failed to start', error);
+    return undefined;
+  }));

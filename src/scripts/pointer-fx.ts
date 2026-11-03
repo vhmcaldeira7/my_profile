@@ -3,8 +3,9 @@ import { state } from './state';
 
 const CONTROL = 'a, button, summary, [role="button"]';
 
-export function initPointerFx(): void {
-  document.addEventListener('click', (e) => {
+/** Starts the pointer fx; returns the function that removes every listener and node it added. */
+export function initPointerFx(): () => void {
+  const onClick = (e: MouseEvent) => {
     const c = (e.target as Element | null)?.closest(CONTROL);
     if (!c) return;
     let x = e.clientX,
@@ -16,8 +17,14 @@ export function initPointerFx(): void {
     }
     state.pulse = { x, y, t: performance.now() };
     burst(x, y);
-  });
-  if (matchMedia('(hover: hover) and (pointer: fine)').matches) cursorRing();
+  };
+  document.addEventListener('click', onClick);
+  const stopRing = matchMedia('(hover: hover) and (pointer: fine)').matches ? cursorRing() : () => {};
+  return () => {
+    document.removeEventListener('click', onClick);
+    stopRing();
+    document.querySelectorAll('.fx-burst').forEach((n) => n.remove());
+  };
 }
 
 function burst(x: number, y: number): void {
@@ -53,7 +60,7 @@ interface Swarm {
   drift: number;
 }
 
-function cursorRing(): void {
+function cursorRing(): () => void {
   const root = document.documentElement;
   const ring = document.body.appendChild(document.createElement('div'));
   ring.className = 'cursor';
@@ -170,42 +177,52 @@ function cursorRing(): void {
     ring.dataset['mode'] = mode;
     kick();
   };
-  document.addEventListener('pointerover', over);
-  document.addEventListener('pointerout', (e) => {
+  const out = (e: PointerEvent) => {
     if (!e.relatedTarget) {
       setLock(null);
       ring.dataset['mode'] = mode = 'off';
     }
-  });
-  addEventListener(
-    'pointermove',
-    (e) => {
-      if (e.pointerType === 'touch') return;
-      px = e.clientX;
-      py = e.clientY;
-      if (!root.classList.contains('has-cursor')) {
-        root.classList.add('has-cursor');
-        rx = px;
-        ry = py;
-        over(e);
-      }
-      kick();
-    },
-    { passive: true },
-  );
-  addEventListener('pointerdown', () => {
+  };
+  const move = (e: PointerEvent) => {
+    if (e.pointerType === 'touch') return;
+    px = e.clientX;
+    py = e.clientY;
+    if (!root.classList.contains('has-cursor')) {
+      root.classList.add('has-cursor');
+      rx = px;
+      ry = py;
+      over(e);
+    }
+    kick();
+  };
+  const press = () => {
     down = true;
     kick();
-  });
-  addEventListener('pointerup', () => {
+  };
+  const release = () => {
     down = false;
     kick();
-  });
-  addEventListener(
-    'scroll',
-    () => {
-      if (lock) kick();
-    },
-    { passive: true },
-  );
+  };
+  const scroll = () => {
+    if (lock) kick();
+  };
+  document.addEventListener('pointerover', over);
+  document.addEventListener('pointerout', out);
+  addEventListener('pointermove', move, { passive: true });
+  addEventListener('pointerdown', press);
+  addEventListener('pointerup', release);
+  addEventListener('scroll', scroll, { passive: true });
+  return () => {
+    document.removeEventListener('pointerover', over);
+    document.removeEventListener('pointerout', out);
+    removeEventListener('pointermove', move);
+    removeEventListener('pointerdown', press);
+    removeEventListener('pointerup', release);
+    removeEventListener('scroll', scroll);
+    cancelAnimationFrame(raf);
+    swarms.forEach((w) => w.box.remove());
+    swarms.clear();
+    ring.remove();
+    root.classList.remove('has-cursor');
+  };
 }
