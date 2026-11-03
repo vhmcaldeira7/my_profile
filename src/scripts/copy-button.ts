@@ -1,5 +1,12 @@
-/** Copies the LinkedIn URL; when the clipboard is unavailable, selects the visible link so the visitor can copy it. */
-export function initCopyButton(copy: HTMLButtonElement, fallbackTarget: Element | null): () => void {
+/**
+ * Copies the LinkedIn URL; when the clipboard is unavailable, selects the visible link so the visitor can copy it.
+ * The new state is also written to a polite live region, so screen readers announce it.
+ */
+export function initCopyButton(
+  copy: HTMLButtonElement,
+  fallbackTarget: Element | null,
+  status: HTMLElement | null = null,
+): () => void {
   const label = copy.dataset['label'] ?? copy.textContent ?? '';
   const labelDone = copy.dataset['labelDone'] ?? label;
   let timer = 0;
@@ -7,10 +14,12 @@ export function initCopyButton(copy: HTMLButtonElement, fallbackTarget: Element 
     const done = () => {
       copy.dataset['state'] = 'copied';
       copy.textContent = labelDone;
+      if (status) status.textContent = labelDone;
       clearTimeout(timer);
       timer = window.setTimeout(() => {
         delete copy.dataset['state'];
         copy.textContent = label;
+        if (status) status.textContent = '';
       }, 1800);
     };
     const fail = () => {
