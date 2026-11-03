@@ -49,15 +49,15 @@ for (const route of routes) {
       await page.goto(route.path);
       const links = page.locator('.lang a');
       await expect(links).toHaveCount(3);
-      await expect(links.nth(0)).toHaveAttribute('href', '/my_profile/');
-      await expect(links.nth(1)).toHaveAttribute('href', '/my_profile/en/');
-      await expect(links.nth(2)).toHaveAttribute('href', '/my_profile/es/');
+      await expect(links.nth(0)).toHaveAttribute('href', '/');
+      await expect(links.nth(1)).toHaveAttribute('href', '/en/');
+      await expect(links.nth(2)).toHaveAttribute('href', '/es/');
       await expect(page.locator('.lang a[aria-current="page"]')).toHaveAttribute('data-locale', route.locale);
       await expect(page.locator('.nav__contact')).toHaveText(route.contact);
       for (const l of routes)
         await expect(page.locator(`link[rel="alternate"][hreflang="${l.lang}"]`)).toHaveAttribute(
           'href',
-          `https://vhmcaldeira7.github.io/my_profile/${l.path}`,
+          `https://victorcaldeira.com/${l.path}`,
         );
     });
 
@@ -77,6 +77,6 @@ for (const route of routes) {
 test('switching language follows the link to the matching route', async ({ page }) => {
   await page.goto('');
   await page.locator('.lang a[data-locale="es"]').click();
-  await expect(page).toHaveURL(/\/my_profile\/es\/$/);
+  await expect(page).toHaveURL(/\/es\/$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'es');
 });

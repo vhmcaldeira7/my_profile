@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 4321;
 
-/** End-to-end checks against the built site served by `astro preview`, under the GitHub Pages base. */
+/** End-to-end checks against the built site served by `astro preview`, at the site root. */
 export default defineConfig({
   testDir: 'tests/e2e',
   fullyParallel: true,
@@ -10,7 +10,7 @@ export default defineConfig({
   retries: process.env['CI'] ? 1 : 0,
   reporter: process.env['CI'] ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
-    baseURL: `http://127.0.0.1:${PORT}/my_profile/`,
+    baseURL: `http://127.0.0.1:${PORT}/`,
     trace: 'retain-on-failure',
   },
   projects: [
@@ -22,7 +22,7 @@ export default defineConfig({
   ],
   webServer: {
     command: `npm run preview -- --host 127.0.0.1 --port ${PORT}`,
-    url: `http://127.0.0.1:${PORT}/my_profile/`,
+    url: `http://127.0.0.1:${PORT}/`,
     reuseExistingServer: !process.env['CI'],
   },
 });
